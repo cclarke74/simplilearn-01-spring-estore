@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.simplilearn.estore.domain.HttpResponse;
 import com.simplilearn.estore.jpa.Admin;
 import com.simplilearn.estore.service.AdminService;
+
+@CrossOrigin("http://localhost:4200")
 
 @RestController
 @RequestMapping("/admins")
