@@ -27,3 +27,20 @@ spring:
     open-in-view: true
     hibernate:
       naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl 
+           
+---
+
+# AWS Configuration    
+
+server:
+  port: 8082
+
+spring:
+  config:
+    activate.on-profile: aws    
+
+# Database Settings
+  datasource:
+    url: jdbc:mysql://simplilearn-rds.cdwugyoeo2fu.us-east-1.rds.amazonaws.com:3306/ecommerce
+    username: admin
+    password: admin123 

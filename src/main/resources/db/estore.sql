@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`ADMINS` (
   `addedOn` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`adminId`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -44,6 +45,30 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`CATEGORIES` (
   `active` INT NULL DEFAULT '0',
   `addedOn` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`categoryId`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `ecommerce`.`PRODUCTS`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ecommerce`.`PRODUCTS` (
+  `productId` INT NOT NULL AUTO_INCREMENT,
+  `productTitle` VARCHAR(500) NOT NULL,
+  `productDescription` VARCHAR(500) NOT NULL,
+  `productCode` VARCHAR(500) NOT NULL,
+  `categoryId` INT NULL DEFAULT NULL,
+  `images` VARCHAR(1000) NULL DEFAULT NULL,
+  `thumbnailImage` INT NULL DEFAULT '0',
+  `price` INT NULL DEFAULT '0',
+  `addedOn` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `rating` INT NOT NULL,
+  PRIMARY KEY (`productId`),
+  INDEX `categoryId` (`categoryId` ASC) VISIBLE,
+  CONSTRAINT `products_ibfk_1`
+    FOREIGN KEY (`categoryId`)
+    REFERENCES `ecommerce`.`CATEGORIES` (`categoryId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -66,6 +91,28 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`USERS` (
   `contact` BIGINT NULL DEFAULT NULL,
   `addedOn` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`userId`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 25
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `ecommerce`.`CART`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ecommerce`.`CART` (
+  `cartId` INT NOT NULL AUTO_INCREMENT,
+  `userId` INT NOT NULL,
+  `productId` INT NOT NULL,
+  PRIMARY KEY (`cartId`),
+  INDEX `fk_CART_USERS1_idx` (`userId` ASC) VISIBLE,
+  INDEX `fk_CART_PRODUCTS1_idx` (`productId` ASC) VISIBLE,
+  CONSTRAINT `fk_CART_PRODUCTS1`
+    FOREIGN KEY (`productId`)
+    REFERENCES `ecommerce`.`PRODUCTS` (`productId`),
+  CONSTRAINT `fk_CART_USERS1`
+    FOREIGN KEY (`userId`)
+    REFERENCES `ecommerce`.`USERS` (`userId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -96,30 +143,6 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`ORDERS` (
   CONSTRAINT `orders_ibfk_1`
     FOREIGN KEY (`userId`)
     REFERENCES `ecommerce`.`USERS` (`userId`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `ecommerce`.`PRODUCTS`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ecommerce`.`PRODUCTS` (
-  `productId` INT NOT NULL AUTO_INCREMENT,
-  `productTitle` VARCHAR(500) NOT NULL,
-  `productDescription` VARCHAR(500) NOT NULL,
-  `productCode` VARCHAR(500) NOT NULL,
-  `categoryId` INT NULL DEFAULT NULL,
-  `images` VARCHAR(1000) NULL DEFAULT NULL,
-  `thumbnailImage` INT NULL DEFAULT '0',
-  `price` INT NULL DEFAULT '0',
-  `addedOn` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
-  `rating` INT NOT NULL,
-  PRIMARY KEY (`productId`),
-  INDEX `categoryId` (`categoryId` ASC) VISIBLE,
-  CONSTRAINT `products_ibfk_1`
-    FOREIGN KEY (`categoryId`)
-    REFERENCES `ecommerce`.`CATEGORIES` (`categoryId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -171,6 +194,27 @@ CREATE TABLE IF NOT EXISTS `ecommerce`.`SHIPMENTS` (
   CONSTRAINT `shipments_ibfk_1`
     FOREIGN KEY (`orderId`)
     REFERENCES `ecommerce`.`ORDERS` (`orderId`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `ecommerce`.`WISHLIST`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ecommerce`.`WISHLIST` (
+  `wishlistId` INT NOT NULL AUTO_INCREMENT,
+  `userId` INT NOT NULL,
+  `productId` INT NOT NULL,
+  PRIMARY KEY (`wishlistId`),
+  INDEX `fk_WISHLIST_USERS1_idx` (`userId` ASC) VISIBLE,
+  INDEX `fk_WISHLIST_PRODUCTS1_idx` (`productId` ASC) VISIBLE,
+  CONSTRAINT `fk_WISHLIST_PRODUCTS1`
+    FOREIGN KEY (`productId`)
+    REFERENCES `ecommerce`.`PRODUCTS` (`productId`),
+  CONSTRAINT `fk_WISHLIST_USERS1`
+    FOREIGN KEY (`userId`)
+    REFERENCES `ecommerce`.`USERS` (`userId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;

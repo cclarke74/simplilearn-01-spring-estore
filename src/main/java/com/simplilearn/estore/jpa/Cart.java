@@ -9,6 +9,7 @@ import jakarta.persistence.*;
  * 
  */
 @Entity
+@Table(name="CART")
 @NamedQuery(name="Cart.findAll", query="SELECT c FROM Cart c")
 public class Cart implements Serializable {
 	private static final long serialVersionUID = 1L;
